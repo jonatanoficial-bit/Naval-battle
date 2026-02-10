@@ -5,11 +5,20 @@ const defaultState = {
   profile: { name: '', avatar: '⚓' },
   rank: { id:'recruta', xp:0 },
   wallet: { credits: 120000, steel: 8000, fuel: 3500, intel: 120 },
+  upgrades: {
+    sonar: 0,
+    ecm: 0,
+    aa: 0,
+    hull: 0,
+    torpedo: 0
+  },
   fleet: [
     { id:'sub_attack', lvl:1, qty:1 },
     { id:'destroyer_modern', lvl:1, qty:1 },
   ],
+  day: 1,
   world: {
+    selected: null,
     conquered: ['BRA'], // só pra demo
     enemies: ['RUS'],
   },

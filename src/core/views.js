@@ -2,9 +2,25 @@ import { storage } from './storage.js';
 import { toast, money } from './ui.js';
 import { ensureBaseContentLoaded } from './content.js';
 import { simulateBattle } from './battle/sim.js';
+import { applyBattleResult } from './battle/resolve.js';
 import { renderWorldMap } from './world/map.js';
 
 const view = () => document.getElementById('view');
+
+function shipThumb(img, emoji='⚓'){
+  if(!img) return `<div class="thumb ship">${emoji}</div>`;
+  return `<div class="thumb ship"><img src="${img}" alt="" loading="lazy"></div>`;
+}
+
+function shipPowerLabel(ship){
+  const st = ship.stats || {};
+  const atk = Number(st.atk ?? 50);
+  const df  = Number(st.def ?? 50);
+  const spd = Number(st.spd ?? 50);
+  const stealth = Number(st.stealth ?? 0);
+  const p = ship.power ?? Math.round(atk*0.55 + df*0.35 + spd*0.18 + stealth*0.22);
+  return { p, atk, df, spd, stealth };
+}
 
 function card(title, subtitle, inner){
   return `
@@ -51,6 +67,11 @@ export const views = {
         <div style="height:8px"></div>
         <input class="input" id="name" placeholder="Ex.: Almirante Vale" value="${p.name || ''}" maxlength="22"/>
         <div style="height:10px"></div>
+        <div class="card" style="padding:12px">
+          <div class="badge">Alvo selecionado: <span id="target">nenhum</span></div>
+          <div class="small" style="margin-top:8px">Vitória adiciona o país à sua lista de conquistados.</div>
+        </div>
+        <div style="height:10px"></div>
         <div class="row">
           <button class="btn" id="save">Salvar</button>
           <button class="btn secondary" onclick="location.hash='${next}'">Voltar</button>
@@ -79,9 +100,15 @@ export const views = {
           <div class="pill"><div class="label">Aço</div><div class="value">${money(s.wallet.steel)}</div></div>
         </div>
         <div style="height:10px"></div>
+        <div class="card" style="padding:12px">
+          <div class="badge">Alvo selecionado: <span id="target">nenhum</span></div>
+          <div class="small" style="margin-top:8px">Vitória adiciona o país à sua lista de conquistados.</div>
+        </div>
+        <div style="height:10px"></div>
         <div class="row">
           <button class="btn" onclick="location.hash='#/shop'">Comprar Embarcações</button>
           <button class="btn secondary" onclick="location.hash='#/research'">Pesquisa</button>
+          <button class="btn secondary" onclick="location.hash='#/upgrades'">Oficina (Upgrades)</button>
         </div>
       `)}
       ${card('Ações rápidas', 'Inicie uma missão ou simule um confronto.', `
@@ -106,10 +133,10 @@ export const views = {
         const def = shipsById[f.id] || { name: f.id, role:'—' };
         return `
         <div class="item">
-          <div class="thumb">⚓</div>
+          <div class="thumb ship"><img src="${def.img || ''}" alt="" loading="lazy" onerror="this.remove();"></div>
           <div class="meta">
             <div class="t">${def.name}</div>
-            <div class="s">${def.role} • Nível ${f.lvl} • Qtde ${f.qty}</div>
+            <div class="s">${def.role} • Nível ${f.lvl} • Qtde ${f.qty}${def.special ? ' • ' + def.special : ''}</div>
           </div>
         </div>`;
       }).join('');
@@ -125,55 +152,103 @@ export const views = {
     });
   },
 
+
   shop(){
     return ensureBaseContentLoaded().then(content => {
       const s = storage.get();
       const canBuy = (cost) => s.wallet.credits >= cost;
-      const cards = content.ships.slice(0, 6).map(ship => {
-        const disabled = !canBuy(ship.cost);
-        return `
-          <div class="item">
-            <div class="thumb">🛳️</div>
-            <div class="meta">
-              <div class="t">${ship.name}</div>
-              <div class="s">${ship.role} • Poder ${ship.power} • Custo ${money(ship.cost)}</div>
-            </div>
-            <div class="right">
-              <button class="btn ${disabled ? 'secondary' : ''}" style="padding:10px 12px;border-radius:14px" data-buy="${ship.id}">
-                ${disabled ? 'Sem créditos' : 'Comprar'}
-              </button>
-            </div>
-          </div>`;
-      }).join('');
+
+      const ships = [...(content.ships||[])].sort((a,b) => {
+        const ta = Number(a.tier||1), tb = Number(b.tier||1);
+        if(ta !== tb) return ta - tb;
+        return Number(a.cost||0) - Number(b.cost||0);
+      });
 
       const body = `
-        ${card('Loja Naval', 'Compre unidades. Você depois substituirá os ícones/imagens por embarcações reais.', `
-          <div class="badge">Créditos: ${money(s.wallet.credits)}</div>
-          <div class="list" style="margin-top:12px">${cards}</div>
+        ${card('Loja Naval', 'Compre unidades. As imagens desta Fase 3 já entram automaticamente na frota/loja/batalhas.', `
+          <div class="kpi">
+            <div class="pill"><div class="label">Créditos</div><div class="value">${money(s.wallet.credits)}</div></div>
+            <div class="pill"><div class="label">Frota</div><div class="value">${(s.fleet||[]).reduce((a,x)=>a+(x.qty||0),0)} unidades</div></div>
+          </div>
+          <div style="height:12px"></div>
+          <input class="input" id="q" placeholder="Buscar embarcação (ex: submarino, fragata, porta-aviões)" />
+          <div style="height:10px"></div>
+          <div class="row" style="gap:10px;flex-wrap:wrap">
+            <button class="btn secondary" data-filter="all" style="padding:10px 12px;border-radius:14px">Todas</button>
+            <button class="btn secondary" data-filter="Submarino" style="padding:10px 12px;border-radius:14px">Submarinos</button>
+            <button class="btn secondary" data-filter="Superfície" style="padding:10px 12px;border-radius:14px">Superfície</button>
+            <button class="btn secondary" data-filter="Suporte" style="padding:10px 12px;border-radius:14px">Suporte</button>
+          </div>
+          <div style="height:12px"></div>
+          <div class="list" id="list"></div>
           <hr class="sep"/>
           <button class="btn secondary" onclick="location.hash='#/hq'">Voltar ao Quartel</button>
         `)}
       `;
+
       view().innerHTML = body;
 
-      view().querySelectorAll('[data-buy]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-buy');
-          const ship = content.ships.find(x => x.id === id);
-          if(!ship) return;
-          storage.set(st => {
-            if(st.wallet.credits < ship.cost) return;
-            st.wallet.credits -= ship.cost;
-            const ex = st.fleet.find(x => x.id === id);
-            if(ex) ex.qty += 1;
-            else st.fleet.push({ id, lvl: 1, qty: 1 });
+      let roleFilter = 'all';
+      const q = document.getElementById('q');
+      const list = document.getElementById('list');
+
+      const render = () => {
+        const term = (q.value||'').trim().toLowerCase();
+        const filtered = ships.filter(ship => {
+          const role = (ship.role||'');
+          const okRole = roleFilter==='all' ? true : role.includes(roleFilter);
+          if(!okRole) return false;
+          if(!term) return true;
+          return (ship.name||'').toLowerCase().includes(term) || role.toLowerCase().includes(term) || (ship.special||'').toLowerCase().includes(term);
+        });
+
+        list.innerHTML = filtered.map(ship => {
+          const st = shipPowerLabel(ship);
+          const disabled = !canBuy(ship.cost);
+          return `
+            <div class="item">
+              ${shipThumb(ship.img,'🛳️')}
+              <div class="meta">
+                <div class="t">${ship.name}</div>
+                <div class="s">${ship.role} • Tier ${ship.tier||1} • Poder ${st.p} • Custo ${money(ship.cost||0)}</div>
+                <div class="s" style="margin-top:6px">ATK ${st.atk} • DEF ${st.df} • SPD ${st.spd}${st.stealth ? ' • STEALTH '+st.stealth : ''}${ship.special ? ' • ' + ship.special : ''}</div>
+              </div>
+              <div class="right">
+                <button class="btn ${disabled ? 'secondary' : ''}" style="padding:10px 12px;border-radius:14px" data-buy="${ship.id}">
+                  ${disabled ? 'Sem créditos' : 'Comprar'}
+                </button>
+              </div>
+            </div>`;
+        }).join('');
+
+        list.querySelectorAll('[data-buy]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const id = btn.getAttribute('data-buy');
+            const ship = ships.find(x => x.id === id);
+            if(!ship) return;
+            applyBattleResult({ result, context: { mode, target: params.get('target') } });
+        toast('Unidade adquirida');
+            views.shop();
           });
-          toast('Unidade adquirida');
-          views.shop(); // re-render
+        });
+      };
+
+      q.addEventListener('input', render);
+      view().querySelectorAll('[data-filter]').forEach(b => {
+        b.addEventListener('click', () => {
+          roleFilter = b.getAttribute('data-filter');
+          view().querySelectorAll('[data-filter]').forEach(x => x.classList.add('secondary'));
+          b.classList.remove('secondary');
+          render();
         });
       });
+
+      // default active
+      view().querySelector('[data-filter="all"]').classList.remove('secondary');
+      render();
     });
   },
+
 
   research(){
     const body = `
@@ -244,6 +319,11 @@ export const views = {
           <div id="mapMount"></div>
         </div>
         <div style="height:10px"></div>
+        <div class="card" style="padding:12px">
+          <div class="badge">Alvo selecionado: <span id="target">nenhum</span></div>
+          <div class="small" style="margin-top:8px">Vitória adiciona o país à sua lista de conquistados.</div>
+        </div>
+        <div style="height:10px"></div>
         <div class="row">
           <button class="btn" id="btnWar">Declarar Guerra</button>
           <button class="btn secondary" onclick="location.hash='#/hq'">Voltar</button>
@@ -254,8 +334,11 @@ export const views = {
     view().innerHTML = body;
     const mount = document.getElementById('mapMount');
     let selected = null;
-    mount.addEventListener('country:selected', (e) => { selected = e.detail; });
+    mount.addEventListener('country:selected', (e) => { selected = e.detail; storage.set(s=>{ s.world.selected = e.detail.iso; }); });
     renderWorldMap(mount);
+    const tEl = document.getElementById('target');
+    tEl.textContent = storage.get().world?.selected || 'nenhum';
+    mount.addEventListener('country:selected', (e)=>{ tEl.textContent = e.detail.iso; });
     document.getElementById('btnWar').onclick = () => {
       if(!selected){ toast('Selecione um país no mapa'); return; }
       // Fase 2: iniciar batalha rápida contra o país selecionado
@@ -315,7 +398,27 @@ export const views = {
         ${card('Batalha em tempo real (narrativa)', 'A narração acontece em etapas, com ritmo e emoção. Você pode acelerar.', `
           <div class="badge">Modo: ${mode} • Estratégia: ${strat}</div>
           <div style="height:10px"></div>
-          <button class="btn" id="start">Iniciar Narração</button>
+          <div class="row" style="gap:10px;flex-wrap:wrap">
+            <button class="btn" id="start">Iniciar Narração</button>
+            <button class="btn secondary" id="skip" style="padding:10px 12px;border-radius:14px">Pular</button>
+            <select class="input" id="speed" style="max-width:160px">
+              <option value="1">Velocidade 1x</option>
+              <option value="2">Velocidade 2x</option>
+              <option value="4">Velocidade 4x</option>
+            </select>
+          </div>
+          <div style="height:10px"></div>
+          <div class="badge" style="padding:10px 12px">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+              <span>Progresso</span>
+              <span id="progLabel">0%</span>
+            </div>
+            <div style="height:10px"></div>
+            <div style="height:10px;background:rgba(255,255,255,.10);border-radius:999px;overflow:hidden">
+              <div id="progBar" style="height:100%;width:0%;background:linear-gradient(90deg, rgba(111,231,255,.9), rgba(255,211,138,.85))"></div>
+            </div>
+          </div>
+          <div style="height:10px"></div>
           <div style="height:10px"></div>
           <div id="timeline" class="list"></div>
           <hr class="sep"/>
@@ -347,6 +450,7 @@ export const views = {
 
       const timeline = document.getElementById('timeline');
       const startBtn = document.getElementById('start');
+      const skipBtn = document.getElementById('skip');
       const applyBtn = document.getElementById('apply');
       const final = document.getElementById('final');
 
@@ -362,6 +466,15 @@ export const views = {
       }
 
       let running = false;
+      skipBtn.onclick = () => {
+        timeline.innerHTML = '';
+        for(const e of result.events){ addEvent(e.icon || '📡', e.title, e.text); }
+        final.style.display = 'block';
+        applyBtn.disabled = false;
+        applyBtn.style.opacity = '1';
+        toast('Narração pulada');
+      };
+
       startBtn.onclick = async () => {
         if(running) return;
         running = true;
@@ -369,9 +482,26 @@ export const views = {
         startBtn.style.opacity = '.65';
         timeline.innerHTML = '';
 
+        const speedSel = document.getElementById('speed');
+        const total = (result.events[result.events.length-1]?.t || 0);
+        const startAt = performance.now();
+        const tick = () => {
+          const sp = Number(speedSel.value||1);
+          const elapsed = (performance.now() - startAt) * sp;
+          const pct = total ? Math.min(100, Math.round((elapsed/total)*100)) : 0;
+          document.getElementById('progLabel').textContent = pct + '%';
+          document.getElementById('progBar').style.width = pct + '%';
+          if(pct < 100) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+
+        let lastT = 0;
         for(const e of result.events){
-          await new Promise(r => setTimeout(r, e.t === 0 ? 300 : 950));
-          addEvent('📡', e.title, e.text);
+          const sp = Number(speedSel.value||1);
+          const wait = Math.max(250, (e.t - lastT) / sp);
+          lastT = e.t;
+          await new Promise(r => setTimeout(r, wait));
+          addEvent(e.icon || '📡', e.title, e.text);
         }
 
         // Reveal final summary
@@ -462,6 +592,11 @@ admin(){
         <div style="height:8px"></div>
         <input class="input" id="dlcid" placeholder="ex.: dlc_001_atlantic"/>
         <div style="height:10px"></div>
+        <div class="card" style="padding:12px">
+          <div class="badge">Alvo selecionado: <span id="target">nenhum</span></div>
+          <div class="small" style="margin-top:8px">Vitória adiciona o país à sua lista de conquistados.</div>
+        </div>
+        <div style="height:10px"></div>
         <div class="row">
           <button class="btn" id="enable">Ativar</button>
           <button class="btn secondary" id="disable">Desativar</button>
@@ -527,3 +662,55 @@ admin(){
     };
   },
 };
+
+
+  upgrades(){
+    const s = storage.get();
+    const u = s.upgrades || { sonar:0, ecm:0, aa:0, hull:0, torpedo:0 };
+    const costFor = (lvl) => Math.round(12000 + lvl*9000);
+    const body = `
+      ${card('Oficina • Upgrades', 'Melhore sua frota. Estes upgrades afetam diretamente a chance e o desempenho nas batalhas.', `
+        <div class="badge">Dia ${s.day || 1} • Créditos: ${money(s.wallet.credits)}</div>
+        <div style="height:12px"></div>
+        <div class="list">
+          ${['sonar','ecm','aa','hull','torpedo'].map(k => {
+            const label = ({sonar:'Sonar',ecm:'ECM',aa:'Defesa Aérea',hull:'Casco',torpedo:'Torpedos'})[k];
+            const lvl = Number(u[k]||0);
+            const cost = costFor(lvl);
+            const disabled = s.wallet.credits < cost;
+            const desc = ({sonar:'+detecção/submarinos',ecm:'-precisão inimiga',aa:'resistência a mísseis',hull:'+durabilidade',torpedo:'+dano submarino'})[k];
+            return `
+            <div class="item">
+              <div class="thumb">🔧</div>
+              <div class="meta">
+                <div class="t">${label} • Nível ${lvl}</div>
+                <div class="s">${desc} • Próximo: ${money(cost)} créditos</div>
+              </div>
+              <div class="right">
+                <button class="btn ${disabled?'secondary':''}" style="padding:10px 12px;border-radius:14px" data-up="${k}">${disabled?'Sem créditos':'Evoluir'}</button>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>
+        <hr class="sep"/>
+        <button class="btn secondary" onclick="location.hash='#/hq'">Voltar</button>
+      `)}
+    `;
+
+    view().innerHTML = body;
+    view().querySelectorAll('[data-up]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.getAttribute('data-up');
+        const lvl = Number((storage.get().upgrades||{})[key]||0);
+        const cost = costFor(lvl);
+        storage.set(st => {
+          if(st.wallet.credits < cost) return;
+          st.wallet.credits -= cost;
+          st.upgrades = { ...(st.upgrades||{}), [key]: lvl + 1 };
+        });
+        toast('Upgrade aplicado');
+        views.upgrades();
+      });
+    });
+  },
+

@@ -18,6 +18,7 @@ const bgByRoute = {
   intel: 'assets/img/backgrounds/bg_007_intel_briefing.png',
   admin: 'assets/img/backgrounds/bg_008_hq.png',
   settings: 'assets/img/backgrounds/bg_008_hq.png',
+  upgrades: 'assets/img/backgrounds/bg_009_hangar.png',
 };
 
 const tabs = Array.from(document.querySelectorAll('.tab'));

@@ -5,7 +5,15 @@
     "role": "Submarino",
     "tier": 1,
     "power": 70,
-    "cost": 65000
+    "cost": 65000,
+    "img": "assets/img/ships/ship__sub_attack.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
   },
   {
     "id": "destroyer_modern",
@@ -13,7 +21,15 @@
     "role": "Superfície",
     "tier": 1,
     "power": 85,
-    "cost": 90000
+    "cost": 90000,
+    "img": "assets/img/ships/ship__destroyer_modern.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
   },
   {
     "id": "frigate",
@@ -21,7 +37,15 @@
     "role": "Superfície",
     "tier": 1,
     "power": 60,
-    "cost": 55000
+    "cost": 55000,
+    "img": "assets/img/ships/ship__frigate.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
   },
   {
     "id": "cruiser",
@@ -29,7 +53,15 @@
     "role": "Superfície",
     "tier": 2,
     "power": 125,
-    "cost": 180000
+    "cost": 180000,
+    "img": "assets/img/ships/ship__cruiser.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
   },
   {
     "id": "carrier",
@@ -37,7 +69,15 @@
     "role": "Superfície/Aéreo",
     "tier": 3,
     "power": 220,
-    "cost": 420000
+    "cost": 420000,
+    "img": "assets/img/ships/ship__carrier.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
   },
   {
     "id": "sub_ballistic",
@@ -45,6 +85,164 @@
     "role": "Submarino",
     "tier": 3,
     "power": 210,
-    "cost": 390000
+    "cost": 390000,
+    "img": "assets/img/ships/ship__sub_ballistic.png",
+    "stats": {
+      "atk": 50,
+      "def": 50,
+      "spd": 50,
+      "stealth": 0
+    },
+    "special": ""
+  },
+  {
+    "id": "sub_attack_t2",
+    "name": "Submarino de Ataque (Tier 2)",
+    "role": "Submarino",
+    "tier": 2,
+    "cost": 320,
+    "stats": {
+      "atk": 70,
+      "def": 62,
+      "spd": 55,
+      "stealth": 28
+    },
+    "img": "assets/img/ships/ship__sub_attack_t2.png",
+    "special": "Caça submarina"
+  },
+  {
+    "id": "sub_diesel",
+    "name": "Submarino Diesel-elétrico",
+    "role": "Submarino",
+    "tier": 1,
+    "cost": 220,
+    "stats": {
+      "atk": 58,
+      "def": 54,
+      "spd": 48,
+      "stealth": 35
+    },
+    "img": "assets/img/ships/ship__sub_diesel.png",
+    "special": "Alta discrição"
+  },
+  {
+    "id": "sub_midget",
+    "name": "Mini-submarino (Operações Especiais)",
+    "role": "Submarino",
+    "tier": 1,
+    "cost": 160,
+    "stats": {
+      "atk": 42,
+      "def": 36,
+      "spd": 60,
+      "stealth": 45
+    },
+    "img": "assets/img/ships/ship__sub_midget.png",
+    "special": "Infiltração"
+  },
+  {
+    "id": "frigate_asw",
+    "name": "Fragata Antissubmarino",
+    "role": "Superfície",
+    "tier": 2,
+    "cost": 280,
+    "stats": {
+      "atk": 62,
+      "def": 60,
+      "spd": 62,
+      "stealth": 10
+    },
+    "img": "assets/img/ships/ship__frigate_asw.png",
+    "special": "Sonar e helicóptero ASW"
+  },
+  {
+    "id": "cruiser_aa",
+    "name": "Cruzador Antiaéreo",
+    "role": "Superfície",
+    "tier": 3,
+    "cost": 560,
+    "stats": {
+      "atk": 72,
+      "def": 88,
+      "spd": 52,
+      "stealth": 8
+    },
+    "img": "assets/img/ships/ship__cruiser_aa.png",
+    "special": "Defesa aérea em camadas"
+  },
+  {
+    "id": "carrier_light",
+    "name": "Porta-aviões Leve",
+    "role": "Superfície/Aéreo",
+    "tier": 3,
+    "cost": 620,
+    "stats": {
+      "atk": 78,
+      "def": 70,
+      "spd": 55,
+      "stealth": 5
+    },
+    "img": "assets/img/ships/ship__carrier_light.png",
+    "special": "Asa aérea leve"
+  },
+  {
+    "id": "amphib_assault",
+    "name": "Navio de Assalto Anfíbio (LHD/LHA)",
+    "role": "Superfície/Aéreo",
+    "tier": 2,
+    "cost": 420,
+    "stats": {
+      "atk": 54,
+      "def": 72,
+      "spd": 50,
+      "stealth": 6
+    },
+    "img": "assets/img/ships/ship__amphib_assault.png",
+    "special": "Desembarque anfíbio"
+  },
+  {
+    "id": "corvette",
+    "name": "Corveta",
+    "role": "Superfície",
+    "tier": 1,
+    "cost": 180,
+    "stats": {
+      "atk": 48,
+      "def": 44,
+      "spd": 72,
+      "stealth": 12
+    },
+    "img": "assets/img/ships/ship__corvette.png",
+    "special": "Rápida e versátil"
+  },
+  {
+    "id": "support_oiler",
+    "name": "Navio de Reabastecimento",
+    "role": "Suporte",
+    "tier": 1,
+    "cost": 140,
+    "stats": {
+      "atk": 18,
+      "def": 55,
+      "spd": 45,
+      "stealth": 4
+    },
+    "img": "assets/img/ships/ship__support_oiler.png",
+    "special": "Reabastece frota"
+  },
+  {
+    "id": "minehunter",
+    "name": "Caça-minas",
+    "role": "Suporte",
+    "tier": 1,
+    "cost": 150,
+    "stats": {
+      "atk": 22,
+      "def": 52,
+      "spd": 52,
+      "stealth": 6
+    },
+    "img": "assets/img/ships/ship__minehunter.png",
+    "special": "Remove minas"
   }
 ]
