@@ -1,4 +1,4 @@
-# Batalha Naval (Fase 1) — Mobile-first (Vanilla)
+# Naval Battle: Global Domination (Fase 2) — Mobile-first (Vanilla)
 
 Projeto em **HTML + CSS + JavaScript puro**, com **arquitetura expansível (DLC)** e **Admin local**.
 
@@ -8,7 +8,7 @@ Por ser um app que carrega arquivos JSON via `fetch`, rode com um servidor local
 
 ### Opção A (Python)
 ```bash
-cd batalha-naval-fase1-build-2026-02-10
+cd naval-battle-global-domination-fase2-build-2026-02-10
 python -m http.server 8000
 ```
 Abra:
@@ -45,4 +45,4 @@ Quando você tiver as imagens reais (PNG/WebP), basta:
 - adicionar as referências no conteúdo JSON (fase 2)
 
 ## Build
-- build: 2026-02-10
+- build: 2026-02-10 (fase 2)

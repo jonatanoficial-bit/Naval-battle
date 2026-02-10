@@ -17,6 +17,7 @@ const bgByRoute = {
   battleUnderwater: 'assets/img/backgrounds/bg_006_battle_underwater.png',
   intel: 'assets/img/backgrounds/bg_007_intel_briefing.png',
   admin: 'assets/img/backgrounds/bg_008_hq.png',
+  settings: 'assets/img/backgrounds/bg_008_hq.png',
 };
 
 const tabs = Array.from(document.querySelectorAll('.tab'));

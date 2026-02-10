@@ -14,6 +14,7 @@ const defaultState = {
     enemies: ['RUS'],
   },
   dlcEnabled: [],
+  ui: { bgDim: 0.62 },
 };
 
 function load(){

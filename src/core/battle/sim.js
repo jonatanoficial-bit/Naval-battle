@@ -49,10 +49,17 @@ export function simulateBattle({ content, strat }){
     ? `Vitória decisiva. Sua inteligência de combate rende +${rewards.xp} XP e +${rewards.credits} créditos.`
     : 'Derrota tática. A frota preserva ativos e recua para reorganização.';
 
+    const events = [
+    { t: 0,  title: 'Contato detectado', text: narration.intro },
+    { t: 1200, title: midTitle, text: mid },
+    { t: 2400, title: 'Desfecho', text: outro },
+  ];
+
   return {
     chance,
     win,
     rewards,
+    events,
     narration: {
       intro: introByStrat[strat] || introByStrat.aggressive,
       midTitle, mid, outro

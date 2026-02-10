@@ -1,5 +1,8 @@
 /* Batalha Naval — Mobile-first UI */
 :root{
+  --bgDim: .62;
+  --bgDimDesktop: .42;
+
   --bg0:#070a12;
   --glass: rgba(10,14,26,.48);
   --glass2: rgba(10,14,26,.68);
@@ -43,7 +46,7 @@ a{color:inherit;text-decoration:none}
 .bg::after{
   content:"";
   position:absolute;inset:-40px;
-  background: radial-gradient(700px 600px at 50% 40%, rgba(0,0,0,.25), rgba(0,0,0,.8));
+  background: radial-gradient(700px 600px at 50% 40%, rgba(0,0,0,calc(var(--bgDim)*0.35)), rgba(0,0,0,var(--bgDim)));
   pointer-events:none;
 }
 .topbar{
@@ -246,7 +249,11 @@ svg.world{
 }
 .toast.show{transform: translateY(0);opacity:1}
 @media (min-width: 900px){
+  :root{ --bgDim: var(--bgDimDesktop); }
+
   .view{max-width: 980px; margin: 0 auto;}
   .topbar{max-width: 980px; margin: 0 auto;}
   .bottombar{max-width: 980px; margin: 0 auto; left:50%; right:auto; transform:translateX(-50%); width: 980px; border-radius: 24px 24px 0 0;}
 }
+
+.range{width:100%}

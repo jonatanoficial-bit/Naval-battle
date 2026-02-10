@@ -1,5 +1,13 @@
+import { storage } from './storage.js';
+
+export function setBgDim(value){
+  const v = Math.max(0.20, Math.min(0.85, Number(value)));
+  document.documentElement.style.setProperty('--bgDim', String(v));
+}
+
 export function setBackground(url){
   const el = document.getElementById('bg');
+  setBgDim(storage.get().ui?.bgDim ?? 0.62);
   el.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.72)), url('${url}')`;
   el.style.backgroundSize = 'cover';
   el.style.backgroundPosition = 'center';

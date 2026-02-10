@@ -20,12 +20,15 @@ export const views = {
     const p = storage.getProfile();
     const body = `
       ${card('Operação Início', 'Escolha um modo e avance na carreira naval.', `
-        <div class="kpi">
+        <div id="final" style="display:none">
+          <div class="kpi">
           <div class="pill"><div class="label">Comandante</div><div class="value">${p.name || '—'}</div></div>
           <div class="pill"><div class="label">Patente</div><div class="value">${storage.get().rank.id}</div></div>
         </div>
         <div style="height:10px"></div>
         <button class="btn" onclick="location.hash='#/hq'">Entrar no Quartel-General</button>
+        <div style="height:10px"></div>
+        <button class="btn secondary" onclick="location.hash='#/settings'">Ajustes Visuais</button>
         <div style="height:10px"></div>
         <button class="btn secondary" onclick="location.hash='#/profile'">Criar / Editar Perfil</button>
       `)}
@@ -70,7 +73,8 @@ export const views = {
     const s = storage.get();
     const body = `
       ${card('Quartel-General', 'Gerencie recursos, frota e avance na patente.', `
-        <div class="kpi">
+        <div id="final" style="display:none">
+          <div class="kpi">
           <div class="pill"><div class="label">Créditos</div><div class="value">${money(s.wallet.credits)}</div></div>
           <div class="pill"><div class="label">Aço</div><div class="value">${money(s.wallet.steel)}</div></div>
         </div>
@@ -197,7 +201,8 @@ export const views = {
     const s = storage.get();
     const body = `
       ${card('Carreira', 'Ganhe XP em missões e suba de patente.', `
-        <div class="kpi">
+        <div id="final" style="display:none">
+          <div class="kpi">
           <div class="pill"><div class="label">Patente atual</div><div class="value">${s.rank.id}</div></div>
           <div class="pill"><div class="label">XP</div><div class="value">${money(s.rank.xp)}</div></div>
         </div>
@@ -218,6 +223,7 @@ export const views = {
         ${card('Briefing — Campanha (WW3)', mission.briefing, `
           <div class="list">
             ${mission.objectives.map(o => `<div class="item"><div class="thumb">🎯</div><div class="meta"><div class="t">${o}</div><div class="s">Recompensa: XP</div></div></div>`).join('')}
+          </div>
           </div>
           <hr class="sep"/>
           <div class="row">
@@ -246,9 +252,14 @@ export const views = {
       `)}
     `;
     view().innerHTML = body;
-    renderWorldMap(document.getElementById('mapMount'));
+    const mount = document.getElementById('mapMount');
+    let selected = null;
+    mount.addEventListener('country:selected', (e) => { selected = e.detail; });
+    renderWorldMap(mount);
     document.getElementById('btnWar').onclick = () => {
-      toast('Escolha um alvo no mapa (fase 1: demo).');
+      if(!selected){ toast('Selecione um país no mapa'); return; }
+      // Fase 2: iniciar batalha rápida contra o país selecionado
+      location.hash = '#/battlePlanning?mode=world&target=' + encodeURIComponent(selected.iso);
     };
   },
 
@@ -301,7 +312,15 @@ export const views = {
       const result = simulateBattle({ content, strat });
 
       const body = `
-        ${card('A batalha começa…', result.narration.intro, `
+        ${card('Batalha em tempo real (narrativa)', 'A narração acontece em etapas, com ritmo e emoção. Você pode acelerar.', `
+          <div class="badge">Modo: ${mode} • Estratégia: ${strat}</div>
+          <div style="height:10px"></div>
+          <button class="btn" id="start">Iniciar Narração</button>
+          <div style="height:10px"></div>
+          <div id="timeline" class="list"></div>
+          <hr class="sep"/>
+
+          <div id="final" style="display:none">
           <div class="kpi">
             <div class="pill"><div class="label">Chance estimada</div><div class="value">${result.chance}%</div></div>
             <div class="pill"><div class="label">Resultado</div><div class="value">${result.win ? 'Vitória' : 'Derrota'}</div></div>
@@ -316,14 +335,51 @@ export const views = {
             <div class="thumb">📜</div>
             <div class="meta"><div class="t">Relatório</div><div class="s">${result.narration.outro}</div></div>
           </div>
+          </div>
           <hr class="sep"/>
           <div class="row">
-            <button class="btn" id="apply">Aplicar Resultado</button>
+            <button class="btn" id="apply" disabled style="opacity:.65">Aplicar Resultado</button>
             <button class="btn secondary" onclick="location.hash='#/battlePlanning?mode=${encodeURIComponent(mode)}'">Nova Estratégia</button>
           </div>
         `)}
       `;
       view().innerHTML = body;
+
+      const timeline = document.getElementById('timeline');
+      const startBtn = document.getElementById('start');
+      const applyBtn = document.getElementById('apply');
+      const final = document.getElementById('final');
+
+      function addEvent(icon, title, text){
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `
+          <div class="thumb">${icon}</div>
+          <div class="meta"><div class="t">${title}</div><div class="s">${text}</div></div>
+        `;
+        timeline.appendChild(el);
+        el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }
+
+      let running = false;
+      startBtn.onclick = async () => {
+        if(running) return;
+        running = true;
+        startBtn.disabled = true;
+        startBtn.style.opacity = '.65';
+        timeline.innerHTML = '';
+
+        for(const e of result.events){
+          await new Promise(r => setTimeout(r, e.t === 0 ? 300 : 950));
+          addEvent('📡', e.title, e.text);
+        }
+
+        // Reveal final summary
+        final.style.display = 'block';
+        applyBtn.disabled = false;
+        applyBtn.style.opacity = '1';
+        toast('Narração concluída');
+      };
 
       document.getElementById('apply').onclick = () => {
         storage.set(s => {
@@ -341,7 +397,40 @@ export const views = {
     });
   },
 
-  admin(){
+  
+  settings(){
+    const s = storage.get();
+    const bgDim = s.ui?.bgDim ?? 0.62;
+    const body = `
+      ${card('Ajustes Visuais', 'Melhore a visibilidade dos fundos no PC e no celular.', `
+        <label class="small">Intensidade da sombra do fundo (quanto menor, mais visível)</label>
+        <div style="height:10px"></div>
+        <input class="range" id="bgDim" type="range" min="0.20" max="0.85" step="0.01" value="${bgDim}">
+        <div style="height:10px"></div>
+        <div class="badge">Atual: ${bgDim.toFixed(2)}</div>
+        <hr class="sep"/>
+        <button class="btn" id="save">Salvar</button>
+        <div style="height:10px"></div>
+        <button class="btn secondary" onclick="location.hash='#/home'">Voltar</button>
+      `)}
+    `;
+    view().innerHTML = body;
+
+    const input = document.getElementById('bgDim');
+    const badge = view().querySelector('.badge');
+    input.addEventListener('input', () => {
+      const v = Number(input.value);
+      badge.textContent = 'Atual: ' + v.toFixed(2);
+      document.documentElement.style.setProperty('--bgDim', String(v));
+    });
+
+    document.getElementById('save').onclick = () => {
+      const v = Number(input.value);
+      storage.set(st => { st.ui = { ...(st.ui||{}), bgDim: v }; });
+      toast('Ajuste salvo');
+    };
+  },
+admin(){
     const body = `
       ${card('Admin (local)', 'Fase 1: login por PIN e gestão de DLC via import/export JSON.', `
         <label class="small">PIN</label>
