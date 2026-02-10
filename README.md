@@ -1,4 +1,4 @@
-# Naval Battle: Global Domination (Fase 2) — Mobile-first (Vanilla)
+# Naval Battle: Global Domination (Fase 4) — Mobile-first (Vanilla)
 
 Projeto em **HTML + CSS + JavaScript puro**, com **arquitetura expansível (DLC)** e **Admin local**.
 
@@ -37,7 +37,7 @@ Use a extensão **Live Server** e clique em **Go Live**.
 
 ## Mapa “real”
 Nesta fase, o mapa é **SVG simplificado** (demo) para já ter cliques e estados.
-Na **Fase 2**, substituímos por **GeoJSON/SVG completo de países reais** (camada funcional), mantendo o fundo cinematográfico como estética.
+Na **Fase 4**, substituímos por **GeoJSON/SVG completo de países reais** (camada funcional), mantendo o fundo cinematográfico como estética.
 
 ## Substituir navios/submarinos por imagens reais
 Quando você tiver as imagens reais (PNG/WebP), basta:
