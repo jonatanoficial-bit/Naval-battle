@@ -1,0 +1,12 @@
+[
+  {
+    "id": "ww3_001",
+    "name": "Operação Atlântico Norte",
+    "briefing": "Relatórios indicam movimentação hostil em rotas estratégicas. Neutralize o grupo-tarefa inimigo e assegure a região.",
+    "objectives": [
+      "Tomar controle do Atlântico Norte",
+      "Destruir porta-aviões inimigos",
+      "Retornar com pelo menos 70% da frota intacta"
+    ]
+  }
+]

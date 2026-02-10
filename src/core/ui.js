@@ -1,0 +1,24 @@
+export function setBackground(url){
+  const el = document.getElementById('bg');
+  el.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.72)), url('${url}')`;
+  el.style.backgroundSize = 'cover';
+  el.style.backgroundPosition = 'center';
+}
+
+let toastTimer = null;
+export function toast(message){
+  let t = document.querySelector('.toast');
+  if(!t){
+    t = document.createElement('div');
+    t.className = 'toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = message;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+export function money(n){
+  return new Intl.NumberFormat('pt-BR').format(Math.max(0, Math.floor(n)));
+}

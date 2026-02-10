@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sub_attack",
+    "name": "Submarino de Ataque (Genérico)",
+    "role": "Submarino",
+    "tier": 1,
+    "power": 70,
+    "cost": 65000
+  },
+  {
+    "id": "destroyer_modern",
+    "name": "Contratorpedeiro Moderno (Genérico)",
+    "role": "Superfície",
+    "tier": 1,
+    "power": 85,
+    "cost": 90000
+  },
+  {
+    "id": "frigate",
+    "name": "Fragata Multiuso (Genérico)",
+    "role": "Superfície",
+    "tier": 1,
+    "power": 60,
+    "cost": 55000
+  },
+  {
+    "id": "cruiser",
+    "name": "Cruzador de Mísseis (Genérico)",
+    "role": "Superfície",
+    "tier": 2,
+    "power": 125,
+    "cost": 180000
+  },
+  {
+    "id": "carrier",
+    "name": "Porta-Aviões (Genérico)",
+    "role": "Superfície/Aéreo",
+    "tier": 3,
+    "power": 220,
+    "cost": 420000
+  },
+  {
+    "id": "sub_ballistic",
+    "name": "Submarino Balístico (Genérico)",
+    "role": "Submarino",
+    "tier": 3,
+    "power": 210,
+    "cost": 390000
+  }
+]

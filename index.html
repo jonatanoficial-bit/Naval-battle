@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Batalha Naval — Fase 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div id="app" class="app">
+    <div id="bg" class="bg"></div>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">Batalha Naval</div>
+          <div class="brand-subtitle">Fase 1 • Single Player</div>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="iconbtn" id="btnSound" title="Som">
+          <span class="icon">🔊</span>
+        </button>
+        <a class="iconbtn" href="#/admin" title="Admin">
+          <span class="icon">🛠️</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="view" class="view" role="main" aria-live="polite"></main>
+
+    <nav class="bottombar" id="bottombar">
+      <a class="tab" href="#/home" data-route="home">Início</a>
+      <a class="tab" href="#/hq" data-route="hq">Quartel</a>
+      <a class="tab" href="#/world" data-route="world">Mundo</a>
+      <a class="tab" href="#/fleet" data-route="fleet">Frota</a>
+      <a class="tab" href="#/ranks" data-route="ranks">Carreira</a>
+    </nav>
+  </div>
+
+  <script type="module" src="src/core/app.js"></script>
+</body>
+</html>

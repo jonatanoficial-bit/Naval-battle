@@ -1,0 +1,34 @@
+[
+  {
+    "code": "BRA",
+    "name": "Brasil"
+  },
+  {
+    "code": "USA",
+    "name": "Estados Unidos"
+  },
+  {
+    "code": "RUS",
+    "name": "Rússia"
+  },
+  {
+    "code": "CHN",
+    "name": "China"
+  },
+  {
+    "code": "GBR",
+    "name": "Reino Unido"
+  },
+  {
+    "code": "FRA",
+    "name": "França"
+  },
+  {
+    "code": "AUS",
+    "name": "Austrália"
+  },
+  {
+    "code": "ZAF",
+    "name": "África do Sul"
+  }
+]

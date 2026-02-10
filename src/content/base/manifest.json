@@ -1,0 +1,11 @@
+{
+  "id": "base",
+  "name": "Base Content",
+  "version": "1.0.0",
+  "files": {
+    "ships": "src/content/base/ships.json",
+    "ranks": "src/content/base/ranks.json",
+    "missions": "src/content/base/missions.json",
+    "countries": "src/content/base/countries.json"
+  }
+}

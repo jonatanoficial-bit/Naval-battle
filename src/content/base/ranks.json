@@ -1,0 +1,38 @@
+[
+  {
+    "id": "recruta",
+    "xpRequired": 0
+  },
+  {
+    "id": "marinheiro",
+    "xpRequired": 300
+  },
+  {
+    "id": "cabo",
+    "xpRequired": 750
+  },
+  {
+    "id": "sargento",
+    "xpRequired": 1400
+  },
+  {
+    "id": "tenente",
+    "xpRequired": 2200
+  },
+  {
+    "id": "capitao",
+    "xpRequired": 3200
+  },
+  {
+    "id": "contra-almirante",
+    "xpRequired": 4500
+  },
+  {
+    "id": "vice-almirante",
+    "xpRequired": 6200
+  },
+  {
+    "id": "almirante",
+    "xpRequired": 8200
+  }
+]
