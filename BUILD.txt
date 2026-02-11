@@ -1,0 +1,7 @@
+Naval Battle: Global Domination
+Build: 2026-02-11_092605 (UTC-03)
+Package: code-only (no assets)
+
+Notes:
+- Fixed GitHub Pages relative paths
+- Fixed views.js syntax error and ensured export

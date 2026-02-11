@@ -661,8 +661,6 @@ admin(){
       input.click();
     };
   },
-};
-
 
   upgrades(){
     const s = storage.get();
@@ -713,4 +711,6 @@ admin(){
       });
     });
   },
+};
 
+export { views };
