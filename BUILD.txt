@@ -1,2 +1,2 @@
 Naval Battle: Global Domination
-BUILD 2026-02-11_132631
+BUILD 2026-02-11_144726

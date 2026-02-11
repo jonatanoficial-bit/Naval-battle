@@ -1,7 +1,7 @@
 import { router } from './router.js';
-import { storage } from './storage.js';
+import { storage } from \1./storage.js?v=2026-02-11_144726\1;
 import { setBackground, toast } from './ui.js';
-import { ensureBaseContentLoaded } from './content.js';
+import { ensureBaseContentLoaded } from \1./content.js?v=2026-02-11_144726\1;
 
 const bgByRoute = {
   home: 'assets/img/backgrounds/bg_001_home.png',
@@ -72,3 +72,7 @@ async function init(){
 }
 
 init();
+
+
+// Build tag
+window.__BUILD__ = '2026-02-11_144726';
