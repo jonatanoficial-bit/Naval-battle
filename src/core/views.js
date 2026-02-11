@@ -661,8 +661,10 @@ admin(){
       input.click();
     };
   },
+};
 
-  upgrades(){
+
+function upgrades(){
     const s = storage.get();
     const u = s.upgrades || { sonar:0, ecm:0, aa:0, hull:0, torpedo:0 };
     const costFor = (lvl) => Math.round(12000 + lvl*9000);
@@ -710,7 +712,9 @@ admin(){
         views.upgrades();
       });
     });
-  },
-};
 
-export { views };
+// attach upgrades view (hotfix)
+try{ views.upgrades = upgrades; }catch(e){}
+
+  },
+
