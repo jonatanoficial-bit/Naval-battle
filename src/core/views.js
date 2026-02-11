@@ -713,8 +713,7 @@ function upgrades(){
       });
     });
 
-// attach upgrades view (hotfix)
-try{ views.upgrades = upgrades; }catch(e){}
 
   },
 
+export { views };
