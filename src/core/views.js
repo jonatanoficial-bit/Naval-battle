@@ -1,9 +1,9 @@
-import { storage } from './storage.js';
-import { toast, money } from './ui.js';
-import { ensureBaseContentLoaded } from './content.js';
-import { simulateBattle } from './battle/sim.js';
-import { applyBattleResult } from './battle/resolve.js';
-import { renderWorldMap } from './world/map.js';
+import { storage } from './storage.js?v=2026-02-11_170809';
+import { toast, money } from './ui.js?v=2026-02-11_170809';
+import { ensureBaseContentLoaded } from './content.js?v=2026-02-11_170809';
+import { simulateBattle } from './battle/sim.js?v=2026-02-11_170809';
+import { applyBattleResult } from './battle/resolve.js?v=2026-02-11_170809';
+import { renderWorldMap } from './world/map.js?v=2026-02-11_170809';
 
 const view = () => document.getElementById('view');
 
@@ -661,10 +661,8 @@ admin(){
       input.click();
     };
   },
-};
 
-
-function upgrades(){
+  upgrades(){
     const s = storage.get();
     const u = s.upgrades || { sonar:0, ecm:0, aa:0, hull:0, torpedo:0 };
     const costFor = (lvl) => Math.round(12000 + lvl*9000);
@@ -712,8 +710,8 @@ function upgrades(){
         views.upgrades();
       });
     });
-
-
   },
+
+};
 
 export { views };

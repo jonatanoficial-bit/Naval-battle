@@ -1,8 +1,7 @@
-import { router } from './router.js';
-import { views } from './views.js?v=2026-02-11_154835';
-import { storage } from ./storage.js?v=2026-02-11_144726;
-import { setBackground, toast } from './ui.js';
-import { ensureBaseContentLoaded } from ./content.js?v=2026-02-11_144726;
+import { router } from './router.js?v=2026-02-11_170809';
+import { storage } from './storage.js?v=2026-02-11_170809';
+import { setBackground, toast } from './ui.js?v=2026-02-11_170809';
+import { ensureBaseContentLoaded } from './content.js?v=2026-02-11_170809';
 
 const bgByRoute = {
   home: 'assets/img/backgrounds/bg_001_home.png',
@@ -73,7 +72,3 @@ async function init(){
 }
 
 init();
-
-
-// Build tag
-window.__BUILD__ = '2026-02-11_144726';
