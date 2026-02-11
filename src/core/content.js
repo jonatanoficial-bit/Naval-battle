@@ -1,5 +1,5 @@
 // Carrega conteúdo base + DLCs (fase 1: localStorage)
-import { storage } from './storage.js';
+import { storage } from './storage.js?v=2026-02-11_205704';
 
 let cache = null;
 

@@ -1,5 +1,5 @@
-import { storage } from '../storage.js';
-import { toast } from '../ui.js';
+import { storage } from '../storage.js?v=2026-02-11_205704';
+import { toast } from '../ui.js?v=2026-02-11_205704';
 
 function project(lon, lat, width, height){
   // Equirectangular projection (lon:-180..180, lat:-90..90)
@@ -46,19 +46,20 @@ export async function renderWorldMap(mount){
   let geo;
   try{
     const res = await fetch('assets/map/ne_110m_admin_0_countries.geojson');
-    if(!res.ok) throw new Error('HTTP ' + res.status);
+    if(!res.ok) throw new Error('map_http_' + res.status);
     geo = await res.json();
   }catch(err){
-    mount.innerHTML = `
-      <div class="card">
-        <div class="card__title">Mapa indisponível</div>
-        <div class="card__body">
-          Este build está sem a pasta <b>assets/</b>. Para ativar o mapa mundial, envie o arquivo GeoJSON em <code>assets/map/</code>.
-        </div>
-      </div>
-    `;
-    console.warn('World map: falha ao carregar GeoJSON', err);
-    return;
+    // Fallback online (optional). If offline or blocked, show placeholder without crashing.
+    try{
+      const remote = 'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson';
+      const r = await fetch(remote, { cache:'no-store' });
+      if(!r.ok) throw new Error('remote_http_' + r.status);
+      geo = await r.json();
+      toast('Mapa local não encontrado. Usando fallback online.');
+    }catch{
+      mount.innerHTML = `<div class="card" style="padding:14px"><div class="badge">Mapa indisponível</div><div style="height:10px"></div><div class="small">O arquivo do mapa não está disponível em <code>assets/map/</code>. Para ativar o mapa real, envie <code>ne_110m_admin_0_countries.geojson</code> para essa pasta.</div></div>`;
+      return;
+    }
   }
 
   // For performance: render paths as one per feature (ISO_A3).

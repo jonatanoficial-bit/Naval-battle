@@ -8,7 +8,7 @@ Por ser um app que carrega arquivos JSON via `fetch`, rode com um servidor local
 
 ### Opção A (Python)
 ```bash
-cd naval-battle-global-domination-fase2-build-2026-02-10
+cd Naval-Battle-Global-Domination-build-2026-02-11_205704
 python -m http.server 8000
 ```
 Abra:

@@ -1,9 +1,9 @@
 
-import { ui } from './ui.js';
-import { content } from './content.js';
-import { formatMoney } from './utils.js';
-import { buildWorldMap, updateWorldStyles } from './world/map.js';
-import { simulateBattle, calcFleetPower } from './battle/sim.js';
+import { ui } from './ui.js?v=2026-02-11_205704';
+import { content } from './content.js?v=2026-02-11_205704';
+import { formatMoney } from './utils.js?v=2026-02-11_205704';
+import { buildWorldMap, updateWorldStyles } from './world/map.js?v=2026-02-11_205704';
+import { simulateBattle, calcFleetPower } from './battle/sim.js?v=2026-02-11_205704';
 
 function screenShell({bgPath, title, subtitle, pills = []}, body){
   const bg = ui.el('div', { class:'bg', style: `background-image:url('${bgPath}')` });

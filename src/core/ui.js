@@ -1,4 +1,4 @@
-import { storage } from './storage.js';
+import { storage } from './storage.js?v=2026-02-11_205704';
 
 export function setBgDim(value){
   const v = Math.max(0.20, Math.min(0.85, Number(value)));

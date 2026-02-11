@@ -1,4 +1,4 @@
-import { storage } from '../storage.js';
+import { storage } from '../storage.js?v=2026-02-11_205704';
 
 export function applyBattleResult({ result, context }){
   storage.set(s => {

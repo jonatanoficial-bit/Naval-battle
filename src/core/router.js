@@ -1,4 +1,4 @@
-import { views } from './views.js';
+import { views } from './views.js?v=2026-02-11_205704';
 
 function parseHash(){
   const raw = (location.hash || '#/home').replace(/^#\//,'');

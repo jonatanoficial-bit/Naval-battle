@@ -1,5 +1,5 @@
 
-import { ui } from '../src/core/ui.js';
+import { ui } from '../src/core/ui.js?v=2026-02-11_205704';
 
 const STORAGE = 'bn_admin_v1';
 const DEFAULT_PIN = '1234';
