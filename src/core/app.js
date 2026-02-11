@@ -1,7 +1,8 @@
 import { router } from './router.js';
-import { storage } from \1./storage.js?v=2026-02-11_144726\1;
+import { views } from './views.js?v=2026-02-11_154835';
+import { storage } from ./storage.js?v=2026-02-11_144726;
 import { setBackground, toast } from './ui.js';
-import { ensureBaseContentLoaded } from \1./content.js?v=2026-02-11_144726\1;
+import { ensureBaseContentLoaded } from ./content.js?v=2026-02-11_144726;
 
 const bgByRoute = {
   home: 'assets/img/backgrounds/bg_001_home.png',
