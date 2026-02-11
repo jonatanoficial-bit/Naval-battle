@@ -43,8 +43,23 @@ export async function renderWorldMap(mount){
   svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
   svg.classList.add('world');
 
-  const res = await fetch('assets/map/ne_110m_admin_0_countries.geojson');
-  const geo = await res.json();
+  let geo;
+  try{
+    const res = await fetch('assets/map/ne_110m_admin_0_countries.geojson');
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    geo = await res.json();
+  }catch(err){
+    mount.innerHTML = `
+      <div class="card">
+        <div class="card__title">Mapa indisponível</div>
+        <div class="card__body">
+          Este build está sem a pasta <b>assets/</b>. Para ativar o mapa mundial, envie o arquivo GeoJSON em <code>assets/map/</code>.
+        </div>
+      </div>
+    `;
+    console.warn('World map: falha ao carregar GeoJSON', err);
+    return;
+  }
 
   // For performance: render paths as one per feature (ISO_A3).
   for(const f of geo.features){

@@ -1,2 +1,7 @@
 Naval Battle: Global Domination
-BUILD 2026-02-11_170809
+BUILD 2026-02-11_200324
+
+Notas:
+- Pacote code-only (sem assets/)
+- Correção estrutural em src/core/views.js (objeto views fechado corretamente)
+- Fallback do mapa quando assets/map não existe

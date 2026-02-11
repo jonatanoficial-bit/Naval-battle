@@ -1,9 +1,9 @@
-import { storage } from './storage.js?v=2026-02-11_170809';
-import { toast, money } from './ui.js?v=2026-02-11_170809';
-import { ensureBaseContentLoaded } from './content.js?v=2026-02-11_170809';
-import { simulateBattle } from './battle/sim.js?v=2026-02-11_170809';
-import { applyBattleResult } from './battle/resolve.js?v=2026-02-11_170809';
-import { renderWorldMap } from './world/map.js?v=2026-02-11_170809';
+import { storage } from './storage.js';
+import { toast, money } from './ui.js';
+import { ensureBaseContentLoaded } from './content.js';
+import { simulateBattle } from './battle/sim.js';
+import { applyBattleResult } from './battle/resolve.js';
+import { renderWorldMap } from './world/map.js';
 
 const view = () => document.getElementById('view');
 
@@ -661,6 +661,7 @@ admin(){
       input.click();
     };
   },
+,
 
   upgrades(){
     const s = storage.get();
