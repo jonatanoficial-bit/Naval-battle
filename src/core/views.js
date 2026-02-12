@@ -226,25 +226,23 @@ export const views = {
             const id = btn.getAttribute('data-buy');
             const ship = ships.find(x => x.id === id);
             if(!ship) return;
-            // check if player has enough credits
-            const current = storage.get();
+
+            // Compra: desconta créditos e adiciona/incrementa na frota
             const cost = Number(ship.cost || 0);
-            if(current.wallet.credits < cost){
+            const s0 = storage.get();
+            if((s0.wallet?.credits ?? 0) < cost){
               toast('Créditos insuficientes');
               return;
             }
-            // Deduct credits and add to the player's fleet
-            storage.set(state => {
-              state.wallet.credits -= cost;
-              let item = state.fleet.find(x => x.id === id);
-              if(item){
-                item.qty = (item.qty || 0) + 1;
-              }else{
-                state.fleet.push({ id, lvl: 1, qty: 1 });
-              }
+
+            storage.set(s => {
+              s.wallet.credits -= cost;
+              const it = s.fleet.find(x => x.id === id);
+              if(it) it.qty = (it.qty || 0) + 1;
+              else s.fleet.push({ id, lvl: 1, qty: 1 });
             });
+
             toast('Unidade adquirida');
-            // Re-render the shop to update credit counters and button states
             views.shop();
           });
         });

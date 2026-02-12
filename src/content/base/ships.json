@@ -6,7 +6,7 @@
     "tier": 1,
     "power": 70,
     "cost": 65000,
-    "img": "assets/img/ships/ship__sub_attack.png",
+    "img": "assets/img/backgrounds/ships/ship__sub_attack.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -22,7 +22,7 @@
     "tier": 1,
     "power": 85,
     "cost": 90000,
-    "img": "assets/img/ships/ship__destroyer_modern.png",
+    "img": "assets/img/backgrounds/ships/ship__destroyer_modern.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -38,7 +38,7 @@
     "tier": 1,
     "power": 60,
     "cost": 55000,
-    "img": "assets/img/ships/ship__frigate.png",
+    "img": "assets/img/backgrounds/ships/ship__frigate.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -54,7 +54,7 @@
     "tier": 2,
     "power": 125,
     "cost": 180000,
-    "img": "assets/img/ships/ship__cruiser.png",
+    "img": "assets/img/backgrounds/ships/ship__cruiser.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -70,7 +70,7 @@
     "tier": 3,
     "power": 220,
     "cost": 420000,
-    "img": "assets/img/ships/ship__carrier.png",
+    "img": "assets/img/backgrounds/ships/ship__carrier.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -86,7 +86,7 @@
     "tier": 3,
     "power": 210,
     "cost": 390000,
-    "img": "assets/img/ships/ship__sub_ballistic.png",
+    "img": "assets/img/backgrounds/ships/ship__sub_ballistic.png",
     "stats": {
       "atk": 50,
       "def": 50,
@@ -107,7 +107,7 @@
       "spd": 55,
       "stealth": 28
     },
-    "img": "assets/img/ships/ship__sub_attack_t2.png",
+    "img": "assets/img/backgrounds/ships/ship__sub_attack_t2.png",
     "special": "Caça submarina"
   },
   {
@@ -122,7 +122,7 @@
       "spd": 48,
       "stealth": 35
     },
-    "img": "assets/img/ships/ship__sub_diesel.png",
+    "img": "assets/img/backgrounds/ships/ship__sub_diesel.png",
     "special": "Alta discrição"
   },
   {
@@ -137,7 +137,7 @@
       "spd": 60,
       "stealth": 45
     },
-    "img": "assets/img/ships/ship__sub_midget.png",
+    "img": "assets/img/backgrounds/ships/ship__sub_midget.png",
     "special": "Infiltração"
   },
   {
@@ -152,7 +152,7 @@
       "spd": 62,
       "stealth": 10
     },
-    "img": "assets/img/ships/ship__frigate_asw.png",
+    "img": "assets/img/backgrounds/ships/ship__frigate_asw.png",
     "special": "Sonar e helicóptero ASW"
   },
   {
@@ -167,7 +167,7 @@
       "spd": 52,
       "stealth": 8
     },
-    "img": "assets/img/ships/ship__cruiser_aa.png",
+    "img": "assets/img/backgrounds/ships/ship__cruiser_aa.png",
     "special": "Defesa aérea em camadas"
   },
   {
@@ -182,7 +182,7 @@
       "spd": 55,
       "stealth": 5
     },
-    "img": "assets/img/ships/ship__carrier_light.png",
+    "img": "assets/img/backgrounds/ships/ship__carrier_light.png",
     "special": "Asa aérea leve"
   },
   {
@@ -197,7 +197,7 @@
       "spd": 50,
       "stealth": 6
     },
-    "img": "assets/img/ships/ship__amphib_assault.png",
+    "img": "assets/img/backgrounds/ships/ship__amphib_assault.png",
     "special": "Desembarque anfíbio"
   },
   {
@@ -212,7 +212,7 @@
       "spd": 72,
       "stealth": 12
     },
-    "img": "assets/img/ships/ship__corvette.png",
+    "img": "assets/img/backgrounds/ships/ship__corvette.png",
     "special": "Rápida e versátil"
   },
   {
@@ -227,7 +227,7 @@
       "spd": 45,
       "stealth": 4
     },
-    "img": "assets/img/ships/ship__support_oiler.png",
+    "img": "assets/img/backgrounds/ships/ship__support_oiler.png",
     "special": "Reabastece frota"
   },
   {
@@ -242,7 +242,7 @@
       "spd": 52,
       "stealth": 6
     },
-    "img": "assets/img/ships/ship__minehunter.png",
+    "img": "assets/img/backgrounds/ships/ship__minehunter.png",
     "special": "Remove minas"
   }
 ]
