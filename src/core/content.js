@@ -35,6 +35,15 @@ export async function ensureBaseContentLoaded(){
     if(p.files?.countries) out.countries.push(...await fetchJSON(p.files.countries));
   }
 
+  // Override ship images with a generic lightweight placeholder.
+  // The original ship images are heavy and not needed in phase 1. This ensures
+  // missing images don't break the UI and reduces the final bundle size.
+  const placeholderImg = 'assets/img/ships/generic_ship.svg';
+  out.ships = out.ships.map(ship => ({
+    ...ship,
+    img: placeholderImg
+  }));
+
   cache = out;
   return out;
 }
